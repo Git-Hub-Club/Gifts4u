@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Gifts4U eBooks{% endblock %}</title>
+    <title>{% block title %}Gifts4u eBooks{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_css %}{% endblock %}
@@ -12,7 +12,7 @@
     <header>
         <div class="container">
             <div class="site-header">
-                <a href="{{ url_for('index') }}" class="logo">Gifts4U eBooks</a>
+                <a href="{{ url_for('index') }}" class="logo">Gifts4u eBooks</a>
                 <form action="{{ url_for('search') }}" method="get" class="search-form">
                     <input type="text" name="q" placeholder="Search ebooks..." value="{{ request.args.get('q', '') }}">
                     <button type="submit">Search</button>
@@ -47,7 +47,7 @@
     
     <footer>
         <div class="container">
-            <p>© 2025 Gifts4U eBooks - A Lightweight eBook Directory | <a href="{{ url_for('admin_login') }}">Admin</a></p>
+            <p>© 2025 Gifts4u eBooks - A Lightweight eBook Directory | <a href="{{ url_for('admin_login') }}">Admin</a></p>
         </div>
     </footer>
     

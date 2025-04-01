@@ -1,12 +1,33 @@
 {
   "categories": [
-    {"id": "fiction", "name": "Fiction"},
-    {"id": "nonfiction", "name": "Non-Fiction"},
-    {"id": "academic", "name": "Academic & Textbooks"},
-    {"id": "scifi-fantasy", "name": "Sci-Fi & Fantasy"},
-    {"id": "biography", "name": "Biography & Memoir"},
-    {"id": "self-help", "name": "Self-Help & Personal Development"},
-    {"id": "other", "name": "Other eBooks"}
+    {
+      "id": "fiction",
+      "name": "Fiction"
+    },
+    {
+      "id": "nonfiction",
+      "name": "Non-Fiction"
+    },
+    {
+      "id": "academic",
+      "name": "Academic & Textbooks"
+    },
+    {
+      "id": "scifi-fantasy",
+      "name": "Sci-Fi & Fantasy"
+    },
+    {
+      "id": "self-help",
+      "name": "Self-Help & Personal Development"
+    },
+    {
+      "id": "biography",
+      "name": "Biography & Memoir"
+    },
+    {
+      "id": "other",
+      "name": "Other eBooks"
+    }
   ],
   "files": [
     {
@@ -18,7 +39,10 @@
       "added_date": "2025-03-15",
       "downloads": 1425,
       "external_links": [
-        {"title": "Direct Download", "url": "https://example.com/download/book1"}
+        {
+          "title": "Direct Download",
+          "url": "https://example.com/download/book1"
+        }
       ],
       "file_info": {
         "format": "EPUB, MOBI, PDF",
@@ -36,7 +60,10 @@
       "added_date": "2025-03-14",
       "downloads": 874,
       "external_links": [
-        {"title": "Direct Download", "url": "https://example.com/download/book2"}
+        {
+          "title": "Direct Download",
+          "url": "https://example.com/download/book2"
+        }
       ],
       "file_info": {
         "format": "EPUB, PDF",
@@ -54,7 +81,10 @@
       "added_date": "2025-03-12",
       "downloads": 645,
       "external_links": [
-        {"title": "Direct Download", "url": "https://example.com/download/book3"}
+        {
+          "title": "Direct Download",
+          "url": "https://example.com/download/book3"
+        }
       ],
       "file_info": {
         "format": "PDF",
@@ -72,7 +102,10 @@
       "added_date": "2025-03-10",
       "downloads": 1565,
       "external_links": [
-        {"title": "Direct Download", "url": "https://example.com/download/book4"}
+        {
+          "title": "Direct Download",
+          "url": "https://example.com/download/book4"
+        }
       ],
       "file_info": {
         "format": "EPUB, MOBI, PDF",
@@ -90,7 +123,10 @@
       "added_date": "2025-03-09",
       "downloads": 745,
       "external_links": [
-        {"title": "Direct Download", "url": "https://example.com/download/book5"}
+        {
+          "title": "Direct Download",
+          "url": "https://example.com/download/book5"
+        }
       ],
       "file_info": {
         "format": "EPUB, PDF",
