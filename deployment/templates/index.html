@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Gifts4u eBooks - Lightweight eBook Directory{% endblock %}
+
+{% block content %}
+    <h1 class="section-title">Latest eBooks</h1>
+    {% if latest_files %}
+    <table class="file-table">
+        <thead>
+            <tr>
+                <th class="name-column">Name</th>
+                <th>Size</th>
+                <th>Date Added</th>
+                <th>Downloads</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in latest_files %}
+            <tr>
+                <td class="name-column">
+                    <a href="{{ url_for('file_details', file_id=file.id) }}">{{ file.name }}</a>
+                </td>
+                <td class="size-column">{{ file.size }}</td>
+                <td class="date-column">{{ file.added_date }}</td>
+                <td class="downloads">{{ file.downloads }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No eBooks available.</p>
+    {% endif %}
+
+    <h1 class="section-title">Popular eBooks</h1>
+    {% if popular_files %}
+    <table class="file-table">
+        <thead>
+            <tr>
+                <th class="name-column">Name</th>
+                <th>Size</th>
+                <th>Date Added</th>
+                <th>Downloads</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in popular_files %}
+            <tr>
+                <td class="name-column">
+                    <a href="{{ url_for('file_details', file_id=file.id) }}">{{ file.name }}</a>
+                </td>
+                <td class="size-column">{{ file.size }}</td>
+                <td class="date-column">{{ file.added_date }}</td>
+                <td class="downloads">{{ file.downloads }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No eBooks available.</p>
+    {% endif %}
+{% endblock %}

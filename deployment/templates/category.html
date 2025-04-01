@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category_name }} Files - 1337Files{% endblock %}
+
+{% block content %}
+    <h1 class="section-title">{{ category_name }}</h1>
+    
+    {% if files %}
+    <table class="file-table">
+        <thead>
+            <tr>
+                <th class="name-column">Name</th>
+                <th>Size</th>
+                <th>Date Added</th>
+                <th>Downloads</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in files %}
+            <tr>
+                <td class="name-column">
+                    <a href="{{ url_for('file_details', file_id=file.id) }}">{{ file.name }}</a>
+                </td>
+                <td class="size-column">{{ file.size }}</td>
+                <td class="date-column">{{ file.added_date }}</td>
+                <td class="downloads">{{ file.downloads }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No files available in this category.</p>
+    {% endif %}
+{% endblock %}

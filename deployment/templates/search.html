@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results for "{{ query }}" - 1337Files{% endblock %}
+
+{% block content %}
+    <h1 class="section-title">Search Results for "{{ query }}"</h1>
+    
+    {% if results %}
+    <table class="file-table">
+        <thead>
+            <tr>
+                <th class="name-column">Name</th>
+                <th>Size</th>
+                <th>Date Added</th>
+                <th>Downloads</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in results %}
+            <tr>
+                <td class="name-column">
+                    <a href="{{ url_for('file_details', file_id=file.id) }}">{{ file.name }}</a>
+                </td>
+                <td class="size-column">{{ file.size }}</td>
+                <td class="date-column">{{ file.added_date }}</td>
+                <td class="downloads">{{ file.downloads }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No results found for "{{ query }}".</p>
+    {% endif %}
+{% endblock %}

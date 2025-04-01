@@ -1,0 +1,139 @@
+{
+  "categories": [
+    {
+      "id": "fiction",
+      "name": "Fiction"
+    },
+    {
+      "id": "nonfiction",
+      "name": "Non-Fiction"
+    },
+    {
+      "id": "academic",
+      "name": "Academic & Textbooks"
+    },
+    {
+      "id": "scifi-fantasy",
+      "name": "Sci-Fi & Fantasy"
+    },
+    {
+      "id": "self-help",
+      "name": "Self-Help & Personal Development"
+    },
+    {
+      "id": "biography",
+      "name": "Biography & Memoir"
+    },
+    {
+      "id": "other",
+      "name": "Other eBooks"
+    }
+  ],
+  "files": [
+    {
+      "id": "fiction-1",
+      "name": "The Great Novel",
+      "category_id": "fiction",
+      "description": "A captivating story of adventure and discovery in the modern world.",
+      "size": "2.3 MB",
+      "added_date": "2025-03-15",
+      "downloads": 1425,
+      "external_links": [
+        {
+          "title": "Direct Download",
+          "url": "https://example.com/download/book1"
+        }
+      ],
+      "file_info": {
+        "format": "EPUB, MOBI, PDF",
+        "pages": "342",
+        "language": "English",
+        "author": "Jane Smith"
+      }
+    },
+    {
+      "id": "nonfiction-1",
+      "name": "Understanding Our World",
+      "category_id": "nonfiction",
+      "description": "An insightful exploration of our planet's ecosystems and how they work together.",
+      "size": "4.5 MB",
+      "added_date": "2025-03-14",
+      "downloads": 874,
+      "external_links": [
+        {
+          "title": "Direct Download",
+          "url": "https://example.com/download/book2"
+        }
+      ],
+      "file_info": {
+        "format": "EPUB, PDF",
+        "pages": "256",
+        "language": "English",
+        "author": "Dr. Robert Johnson"
+      }
+    },
+    {
+      "id": "academic-1",
+      "name": "Advanced Physics Concepts",
+      "category_id": "academic",
+      "description": "Comprehensive textbook covering the latest theories in quantum physics.",
+      "size": "12.6 MB",
+      "added_date": "2025-03-12",
+      "downloads": 645,
+      "external_links": [
+        {
+          "title": "Direct Download",
+          "url": "https://example.com/download/book3"
+        }
+      ],
+      "file_info": {
+        "format": "PDF",
+        "pages": "518",
+        "language": "English",
+        "author": "Prof. Maria Chen"
+      }
+    },
+    {
+      "id": "scifi-1",
+      "name": "Galactic Horizons",
+      "category_id": "scifi-fantasy",
+      "description": "Epic space opera spanning multiple galaxies and civilizations.",
+      "size": "3.2 MB",
+      "added_date": "2025-03-10",
+      "downloads": 1565,
+      "external_links": [
+        {
+          "title": "Direct Download",
+          "url": "https://example.com/download/book4"
+        }
+      ],
+      "file_info": {
+        "format": "EPUB, MOBI, PDF",
+        "pages": "423",
+        "language": "English",
+        "author": "Alex Rivera"
+      }
+    },
+    {
+      "id": "biography-1",
+      "name": "Life of Innovation",
+      "category_id": "biography",
+      "description": "The definitive biography of one of the most influential tech pioneers of our time.",
+      "size": "5.7 MB",
+      "added_date": "2025-03-09",
+      "downloads": 745,
+      "external_links": [
+        {
+          "title": "Direct Download",
+          "url": "https://example.com/download/book5"
+        }
+      ],
+      "file_info": {
+        "format": "EPUB, PDF",
+        "pages": "380",
+        "language": "English",
+        "author": "Linda Harris"
+      }
+    }
+  ]
+}

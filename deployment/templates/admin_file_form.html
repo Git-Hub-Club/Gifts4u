@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {% if file %}Edit eBook{% else %}Add New eBook{% endif %} - Gifts4u Admin
+{% endblock %}
+
+{% block content %}
+<div class="admin-file-form">
+    <h1>{% if file %}Edit eBook{% else %}Add New eBook{% endif %}</h1>
+    
+    <form method="post" action="{{ url_for('admin_edit_file', file_id=file.id) if file else url_for('admin_add_file') }}">
+        <div class="form-group">
+            <label for="id">eBook ID</label>
+            <input type="text" id="id" name="id" value="{{ file.id if file else '' }}" {% if file %}readonly{% endif %} required>
+            {% if not file %}<span class="form-hint">Unique identifier, e.g., "fiction-123"</span>{% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="name">eBook Title</label>
+            <input type="text" id="name" name="name" value="{{ file.name if file else '' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="category_id">Category</label>
+            <select id="category_id" name="category_id" required>
+                <option value="">-- Select Category --</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}" {% if file and file.category_id == category.id %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" required>{{ file.description if file else '' }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="size">eBook Size</label>
+            <input type="text" id="size" name="size" value="{{ file.size if file else '' }}" required>
+            <span class="form-hint">E.g., "2.3 MB", "450 KB"</span>
+        </div>
+        
+        <div class="form-group">
+            <label for="added_date">Added Date</label>
+            <input type="date" id="added_date" name="added_date" value="{{ file.added_date if file else '' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="downloads">Downloads</label>
+            <input type="number" id="downloads" name="downloads" value="{{ file.downloads if file else 0 }}" min="0" required>
+        </div>
+        
+        <h3>External Links</h3>
+        <div id="external-links-container">
+            {% if file and file.external_links %}
+                {% for link in file.external_links %}
+                <div class="external-link">
+                    <div class="form-group">
+                        <label for="link_title_{{ loop.index }}">Link Title</label>
+                        <input type="text" id="link_title_{{ loop.index }}" name="link_titles[]" value="{{ link.title }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="link_url_{{ loop.index }}">Link URL</label>
+                        <input type="url" id="link_url_{{ loop.index }}" name="link_urls[]" value="{{ link.url }}" required>
+                    </div>
+                    {% if not loop.first %}
+                    <button type="button" class="btn-remove-link">Remove Link</button>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="external-link">
+                    <div class="form-group">
+                        <label for="link_title_1">Link Title</label>
+                        <input type="text" id="link_title_1" name="link_titles[]" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="link_url_1">Link URL</label>
+                        <input type="url" id="link_url_1" name="link_urls[]" required>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <button type="button" id="add-link" class="btn-secondary">Add Another Link</button>
+        
+        <h3>eBook Info</h3>
+        <div class="form-group">
+            <p class="form-hint">Add additional info fields relevant to this eBook (format, pages, author, etc.)</p>
+            <div id="file-info-container">
+                {% if file and file.file_info %}
+                    {% for key, value in file.file_info.items() %}
+                    <div class="file-info-pair">
+                        <div class="form-group">
+                            <label for="info_key_{{ loop.index }}">Info Name</label>
+                            <input type="text" id="info_key_{{ loop.index }}" name="info_keys[]" value="{{ key }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="info_value_{{ loop.index }}">Info Value</label>
+                            <input type="text" id="info_value_{{ loop.index }}" name="info_values[]" value="{{ value }}" required>
+                        </div>
+                        {% if not loop.first %}
+                        <button type="button" class="btn-remove-info">Remove</button>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="file-info-pair">
+                        <div class="form-group">
+                            <label for="info_key_1">Info Name</label>
+                            <input type="text" id="info_key_1" name="info_keys[]" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="info_value_1">Info Value</label>
+                            <input type="text" id="info_value_1" name="info_values[]" required>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <button type="button" id="add-info" class="btn-secondary">Add Another Info Field</button>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Save eBook</button>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add link functionality
+        document.getElementById('add-link').addEventListener('click', function() {
+            const container = document.getElementById('external-links-container');
+            const linkCount = container.querySelectorAll('.external-link').length;
+            const newLinkIndex = linkCount + 1;
+            
+            const linkDiv = document.createElement('div');
+            linkDiv.className = 'external-link';
+            linkDiv.innerHTML = `
+                <div class="form-group">
+                    <label for="link_title_${newLinkIndex}">Link Title</label>
+                    <input type="text" id="link_title_${newLinkIndex}" name="link_titles[]" required>
+                </div>
+                <div class="form-group">
+                    <label for="link_url_${newLinkIndex}">Link URL</label>
+                    <input type="url" id="link_url_${newLinkIndex}" name="link_urls[]" required>
+                </div>
+                <button type="button" class="btn-remove-link">Remove Link</button>
+            `;
+            
+            container.appendChild(linkDiv);
+            addRemoveLinkListeners();
+        });
+        
+        // Add info field functionality
+        document.getElementById('add-info').addEventListener('click', function() {
+            const container = document.getElementById('file-info-container');
+            const infoCount = container.querySelectorAll('.file-info-pair').length;
+            const newInfoIndex = infoCount + 1;
+            
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'file-info-pair';
+            infoDiv.innerHTML = `
+                <div class="form-group">
+                    <label for="info_key_${newInfoIndex}">Info Name</label>
+                    <input type="text" id="info_key_${newInfoIndex}" name="info_keys[]" required>
+                </div>
+                <div class="form-group">
+                    <label for="info_value_${newInfoIndex}">Info Value</label>
+                    <input type="text" id="info_value_${newInfoIndex}" name="info_values[]" required>
+                </div>
+                <button type="button" class="btn-remove-info">Remove</button>
+            `;
+            
+            container.appendChild(infoDiv);
+            addRemoveInfoListeners();
+        });
+        
+        function addRemoveLinkListeners() {
+            document.querySelectorAll('.btn-remove-link').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.external-link').remove();
+                });
+            });
+        }
+        
+        function addRemoveInfoListeners() {
+            document.querySelectorAll('.btn-remove-info').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.file-info-pair').remove();
+                });
+            });
+        }
+        
+        // Initialize remove buttons
+        addRemoveLinkListeners();
+        addRemoveInfoListeners();
+    });
+</script>
+{% endblock %}
