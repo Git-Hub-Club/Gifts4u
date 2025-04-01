@@ -1,7 +1,9 @@
 import os
 import json
+import uuid
 import logging
-from flask import Flask, render_template, request, redirect, url_for, flash
+import datetime
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -9,6 +11,9 @@ logging.basicConfig(level=logging.DEBUG)
 # Create the Flask app
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev_key_for_testing")
+
+# Admin credentials
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")  # Default password for testing
 
 # Load data from JSON file
 def load_data():
@@ -29,6 +34,16 @@ def load_data():
             ],
             "files": []
         }
+
+# Save data to JSON file
+def save_data(data):
+    try:
+        with open('data.json', 'w') as f:
+            json.dump(data, f, indent=2)
+        return True
+    except Exception as e:
+        logging.error(f"Error saving data: {e}")
+        return False
 
 # Routes
 @app.route('/')
@@ -95,6 +110,311 @@ def search():
                           categories=data['categories'], 
                           query=query,
                           results=results)
+
+# Admin helper function
+def is_admin():
+    return session.get('admin_logged_in', False)
+
+# Admin auth routes
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if is_admin():
+        return redirect(url_for('admin_dashboard'))
+        
+    error = None
+    if request.method == 'POST':
+        password = request.form.get('password')
+        if password == ADMIN_PASSWORD:
+            session['admin_logged_in'] = True
+            flash('You have been logged in as admin')
+            return redirect(url_for('admin_dashboard'))
+        else:
+            error = 'Invalid password'
+    
+    return render_template('admin_login.html', categories=load_data()['categories'], error=error)
+
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('admin_logged_in', None)
+    flash('You have been logged out')
+    return redirect(url_for('index'))
+
+# Admin dashboard
+@app.route('/admin')
+def admin_dashboard():
+    if not is_admin():
+        return redirect(url_for('admin_login'))
+    
+    data = load_data()
+    search_query = request.args.get('search', '').lower()
+    
+    files = data['files']
+    if search_query:
+        files = [
+            file for file in files
+            if search_query in file.get('name', '').lower() or
+               search_query in file.get('description', '').lower()
+        ]
+    
+    # Sort files by added date (newest first)
+    files = sorted(files, key=lambda x: x.get('added_date', ''), reverse=True)
+    
+    # Add category name to each file
+    for file in files:
+        file['category_name'] = next(
+            (cat['name'] for cat in data['categories'] if cat['id'] == file.get('category_id')),
+            "Unknown"
+        )
+    
+    return render_template('admin_dashboard.html', categories=data['categories'], files=files)
+
+# Add new file
+@app.route('/admin/files/add', methods=['GET', 'POST'])
+def admin_add_file():
+    if not is_admin():
+        return redirect(url_for('admin_login'))
+    
+    data = load_data()
+    
+    if request.method == 'POST':
+        # Get form data
+        file_id = request.form.get('id')
+        
+        # Check if ID already exists
+        if any(f['id'] == file_id for f in data['files']):
+            flash(f'A file with ID "{file_id}" already exists')
+            return render_template('admin_file_form.html', categories=data['categories'], file=None)
+        
+        # Build links array
+        external_links = []
+        link_titles = request.form.getlist('link_titles[]')
+        link_urls = request.form.getlist('link_urls[]')
+        
+        for i in range(len(link_titles)):
+            if i < len(link_urls):
+                external_links.append({
+                    "title": link_titles[i],
+                    "url": link_urls[i]
+                })
+        
+        # Build file info object
+        file_info = {}
+        info_keys = request.form.getlist('info_keys[]')
+        info_values = request.form.getlist('info_values[]')
+        
+        for i in range(len(info_keys)):
+            if i < len(info_values) and info_keys[i]:
+                file_info[info_keys[i]] = info_values[i]
+        
+        # Create new file object
+        new_file = {
+            "id": file_id,
+            "name": request.form.get('name'),
+            "category_id": request.form.get('category_id'),
+            "description": request.form.get('description'),
+            "size": request.form.get('size'),
+            "added_date": request.form.get('added_date'),
+            "downloads": int(request.form.get('downloads', 0)),
+            "seeders": int(request.form.get('seeders', 0)),
+            "leechers": int(request.form.get('leechers', 0)),
+            "external_links": external_links,
+            "file_info": file_info
+        }
+        
+        # Add file to data
+        data['files'].append(new_file)
+        
+        # Save data
+        if save_data(data):
+            flash(f'File "{new_file["name"]}" added successfully')
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash('Error saving file data')
+    
+    return render_template('admin_file_form.html', categories=data['categories'], file=None)
+
+# Edit file
+@app.route('/admin/files/edit/<file_id>', methods=['GET', 'POST'])
+def admin_edit_file(file_id):
+    if not is_admin():
+        return redirect(url_for('admin_login'))
+    
+    data = load_data()
+    file = next((f for f in data['files'] if f.get('id') == file_id), None)
+    
+    if not file:
+        flash('File not found')
+        return redirect(url_for('admin_dashboard'))
+    
+    if request.method == 'POST':
+        # Build links array
+        external_links = []
+        link_titles = request.form.getlist('link_titles[]')
+        link_urls = request.form.getlist('link_urls[]')
+        
+        for i in range(len(link_titles)):
+            if i < len(link_urls):
+                external_links.append({
+                    "title": link_titles[i],
+                    "url": link_urls[i]
+                })
+        
+        # Build file info object
+        file_info = {}
+        info_keys = request.form.getlist('info_keys[]')
+        info_values = request.form.getlist('info_values[]')
+        
+        for i in range(len(info_keys)):
+            if i < len(info_values) and info_keys[i]:
+                file_info[info_keys[i]] = info_values[i]
+        
+        # Update file
+        file_index = next((i for i, f in enumerate(data['files']) if f.get('id') == file_id), None)
+        if file_index is not None:
+            data['files'][file_index] = {
+                "id": file_id,  # ID cannot be changed
+                "name": request.form.get('name'),
+                "category_id": request.form.get('category_id'),
+                "description": request.form.get('description'),
+                "size": request.form.get('size'),
+                "added_date": request.form.get('added_date'),
+                "downloads": int(request.form.get('downloads', 0)),
+                "seeders": int(request.form.get('seeders', 0)),
+                "leechers": int(request.form.get('leechers', 0)),
+                "external_links": external_links,
+                "file_info": file_info
+            }
+            
+            # Save data
+            if save_data(data):
+                flash(f'File "{data["files"][file_index]["name"]}" updated successfully')
+                return redirect(url_for('admin_dashboard'))
+            else:
+                flash('Error saving file data')
+    
+    return render_template('admin_file_form.html', categories=data['categories'], file=file)
+
+# Delete file
+@app.route('/admin/files/delete/<file_id>')
+def admin_delete_file(file_id):
+    if not is_admin():
+        return redirect(url_for('admin_login'))
+    
+    data = load_data()
+    file_index = next((i for i, f in enumerate(data['files']) if f.get('id') == file_id), None)
+    
+    if file_index is not None:
+        file_name = data['files'][file_index]['name']
+        data['files'].pop(file_index)
+        
+        if save_data(data):
+            flash(f'File "{file_name}" deleted successfully')
+        else:
+            flash('Error deleting file')
+    else:
+        flash('File not found')
+    
+    return redirect(url_for('admin_dashboard'))
+
+# Manage categories
+@app.route('/admin/categories')
+def admin_manage_categories():
+    if not is_admin():
+        return redirect(url_for('admin_login'))
+    
+    data = load_data()
+    
+    # Count files in each category
+    categories_with_count = []
+    for category in data['categories']:
+        file_count = len([f for f in data['files'] if f.get('category_id') == category['id']])
+        categories_with_count.append({
+            'id': category['id'],
+            'name': category['name'],
+            'file_count': file_count
+        })
+    
+    return render_template('admin_categories.html', 
+                          categories=data['categories'],
+                          categories_with_count=categories_with_count)
+
+# Add category
+@app.route('/admin/categories/add', methods=['POST'])
+def admin_add_category():
+    if not is_admin():
+        return redirect(url_for('admin_login'))
+    
+    data = load_data()
+    category_id = request.form.get('category_id')
+    category_name = request.form.get('category_name')
+    
+    # Check if category ID already exists
+    if any(c['id'] == category_id for c in data['categories']):
+        flash(f'A category with ID "{category_id}" already exists')
+        return redirect(url_for('admin_manage_categories'))
+    
+    # Add category
+    data['categories'].append({
+        'id': category_id,
+        'name': category_name
+    })
+    
+    # Save data
+    if save_data(data):
+        flash(f'Category "{category_name}" added successfully')
+    else:
+        flash('Error adding category')
+    
+    return redirect(url_for('admin_manage_categories'))
+
+# Edit category
+@app.route('/admin/categories/edit/<category_id>', methods=['POST'])
+def admin_edit_category(category_id):
+    if not is_admin():
+        return redirect(url_for('admin_login'))
+    
+    data = load_data()
+    category_index = next((i for i, c in enumerate(data['categories']) if c.get('id') == category_id), None)
+    
+    if category_index is not None:
+        data['categories'][category_index]['name'] = request.form.get('category_name')
+        
+        if save_data(data):
+            flash(f'Category updated successfully')
+        else:
+            flash('Error updating category')
+    else:
+        flash('Category not found')
+    
+    return redirect(url_for('admin_manage_categories'))
+
+# Delete category
+@app.route('/admin/categories/delete/<category_id>')
+def admin_delete_category(category_id):
+    if not is_admin():
+        return redirect(url_for('admin_login'))
+    
+    data = load_data()
+    
+    # Check if category has files
+    if any(f.get('category_id') == category_id for f in data['files']):
+        flash('Cannot delete category that contains files')
+        return redirect(url_for('admin_manage_categories'))
+    
+    category_index = next((i for i, c in enumerate(data['categories']) if c.get('id') == category_id), None)
+    
+    if category_index is not None:
+        category_name = data['categories'][category_index]['name']
+        data['categories'].pop(category_index)
+        
+        if save_data(data):
+            flash(f'Category "{category_name}" deleted successfully')
+        else:
+            flash('Error deleting category')
+    else:
+        flash('Category not found')
+    
+    return redirect(url_for('admin_manage_categories'))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

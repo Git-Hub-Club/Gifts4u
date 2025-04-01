@@ -249,6 +249,240 @@ footer {
   font-size: 0.9em;
 }
 
+/* Admin Panel Styles */
+.admin-login {
+  max-width: 400px;
+  margin: 50px auto;
+  background-color: var(--secondary-bg);
+  padding: 30px;
+  border-radius: 5px;
+}
+
+.admin-login h1 {
+  margin-top: 0;
+  color: var(--link-color);
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-color);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-color);
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-hint {
+  display: block;
+  font-size: 0.8em;
+  color: var(--text-muted);
+  margin-top: 5px;
+}
+
+.error-message {
+  color: #ff5555;
+  background-color: rgba(255, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.btn-primary, 
+.btn-secondary,
+.btn-danger {
+  display: inline-block;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: var(--button-bg);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--button-hover);
+}
+
+.btn-secondary {
+  background-color: #444;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #555;
+}
+
+.btn-danger {
+  background-color: #e53935;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #f44336;
+}
+
+.btn-small {
+  padding: 4px 8px;
+  font-size: 0.8em;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-dashboard h1,
+.admin-file-form h1,
+.admin-categories h1 {
+  color: var(--link-color);
+  margin-bottom: 25px;
+}
+
+.admin-actions {
+  margin-bottom: 30px;
+}
+
+.admin-actions a {
+  margin-right: 10px;
+}
+
+.admin-files-table,
+.admin-categories-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.admin-files-table th,
+.admin-categories-table th {
+  background-color: var(--table-header-bg);
+  text-align: left;
+  padding: 10px;
+}
+
+.admin-files-table td,
+.admin-categories-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-files-table tr:nth-child(odd),
+.admin-categories-table tr:nth-child(odd) {
+  background-color: var(--table-row-bg);
+}
+
+.admin-files-table tr:nth-child(even),
+.admin-categories-table tr:nth-child(even) {
+  background-color: var(--table-row-alt-bg);
+}
+
+.actions {
+  white-space: nowrap;
+}
+
+.category-form {
+  max-width: 500px;
+  margin-bottom: 30px;
+  background-color: var(--secondary-bg);
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.admin-file-form {
+  background-color: var(--secondary-bg);
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.external-link,
+.file-info-pair {
+  background-color: var(--primary-bg);
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.btn-remove-link,
+.btn-remove-info {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.form-actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  background-color: var(--secondary-bg);
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 5px;
+  width: 50%;
+  max-width: 500px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.close:hover {
+  color: var(--text-color);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .site-header {
@@ -277,5 +511,9 @@ footer {
   
   .file-meta {
     flex-direction: column;
+  }
+  
+  .modal-content {
+    width: 90%;
   }
 }
