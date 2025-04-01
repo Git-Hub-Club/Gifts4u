@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ file.name }} - 1337Files{% endblock %}
+{% block title %}{{ file.name }} - Gifts4U eBooks{% endblock %}
 
 {% block content %}
     <div class="file-details">
@@ -44,7 +44,7 @@
         
         {% if file.file_info %}
         <div class="file-info">
-            <h3>File Information</h3>
+            <h3>eBook Information</h3>
             <table class="file-table">
                 <tbody>
                 {% for key, value in file.file_info.items() %}

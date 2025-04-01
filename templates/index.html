@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}1337Files - Lightweight File Directory{% endblock %}
+{% block title %}Gifts4U eBooks - Lightweight eBook Directory{% endblock %}
 
 {% block content %}
-    <h1 class="section-title">Latest Files</h1>
+    <h1 class="section-title">Latest eBooks</h1>
     {% if latest_files %}
     <table class="file-table">
         <thead>
@@ -30,10 +30,10 @@
         </tbody>
     </table>
     {% else %}
-    <p>No files available.</p>
+    <p>No eBooks available.</p>
     {% endif %}
 
-    <h1 class="section-title">Popular Files</h1>
+    <h1 class="section-title">Popular eBooks</h1>
     {% if popular_files %}
     <table class="file-table">
         <thead>
@@ -60,6 +60,6 @@
         </tbody>
     </table>
     {% else %}
-    <p>No files available.</p>
+    <p>No eBooks available.</p>
     {% endif %}
 {% endblock %}

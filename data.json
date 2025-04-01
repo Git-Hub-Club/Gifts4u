@@ -1,112 +1,112 @@
 {
   "categories": [
-    {"id": "movies", "name": "Movies"},
-    {"id": "tv", "name": "TV Shows"},
-    {"id": "games", "name": "Games"},
-    {"id": "music", "name": "Music"},
-    {"id": "applications", "name": "Applications"},
-    {"id": "documentaries", "name": "Documentaries"},
-    {"id": "other", "name": "Other"}
+    {"id": "fiction", "name": "Fiction"},
+    {"id": "nonfiction", "name": "Non-Fiction"},
+    {"id": "academic", "name": "Academic & Textbooks"},
+    {"id": "scifi-fantasy", "name": "Sci-Fi & Fantasy"},
+    {"id": "biography", "name": "Biography & Memoir"},
+    {"id": "self-help", "name": "Self-Help & Personal Development"},
+    {"id": "other", "name": "Other eBooks"}
   ],
   "files": [
     {
-      "id": "movie-1",
-      "name": "Example Movie 1",
-      "category_id": "movies",
-      "description": "A high-quality movie release with excellent video and audio.",
-      "size": "2.3 GB",
-      "added_date": "2023-11-15",
+      "id": "fiction-1",
+      "name": "The Great Novel",
+      "category_id": "fiction",
+      "description": "A captivating story of adventure and discovery in the modern world.",
+      "size": "2.3 MB",
+      "added_date": "2025-03-15",
       "downloads": 1425,
       "seeders": 145,
       "leechers": 25,
       "external_links": [
-        {"title": "Direct Download", "url": "https://example.com/download/movie1"}
+        {"title": "Direct Download", "url": "https://example.com/download/book1"}
       ],
       "file_info": {
-        "quality": "1080p",
-        "codec": "x264",
+        "format": "EPUB, MOBI, PDF",
+        "pages": "342",
         "language": "English",
-        "runtime": "2h 15m"
+        "author": "Jane Smith"
       }
     },
     {
-      "id": "tv-1",
-      "name": "Example TV Show S01E01",
-      "category_id": "tv",
-      "description": "Season 1 Episode 1 of this popular TV show.",
-      "size": "450 MB",
-      "added_date": "2023-11-14",
+      "id": "nonfiction-1",
+      "name": "Understanding Our World",
+      "category_id": "nonfiction",
+      "description": "An insightful exploration of our planet's ecosystems and how they work together.",
+      "size": "4.5 MB",
+      "added_date": "2025-03-14",
       "downloads": 874,
       "seeders": 98,
       "leechers": 12,
       "external_links": [
-        {"title": "Direct Download", "url": "https://example.com/download/tv1"}
+        {"title": "Direct Download", "url": "https://example.com/download/book2"}
       ],
       "file_info": {
-        "quality": "720p",
-        "codec": "x264",
+        "format": "EPUB, PDF",
+        "pages": "256",
         "language": "English",
-        "runtime": "45m"
+        "author": "Dr. Robert Johnson"
       }
     },
     {
-      "id": "game-1",
-      "name": "Example Game Release",
-      "category_id": "games",
-      "description": "Popular game release with all DLCs included.",
-      "size": "35.6 GB",
-      "added_date": "2023-11-12",
-      "downloads": 2145,
-      "seeders": 245,
-      "leechers": 68,
+      "id": "academic-1",
+      "name": "Advanced Physics Concepts",
+      "category_id": "academic",
+      "description": "Comprehensive textbook covering the latest theories in quantum physics.",
+      "size": "12.6 MB",
+      "added_date": "2025-03-12",
+      "downloads": 645,
+      "seeders": 75,
+      "leechers": 18,
       "external_links": [
-        {"title": "Direct Download", "url": "https://example.com/download/game1"}
+        {"title": "Direct Download", "url": "https://example.com/download/book3"}
       ],
       "file_info": {
-        "platform": "PC",
-        "version": "v1.5",
-        "crack": "Included",
-        "genre": "Action, Adventure"
+        "format": "PDF",
+        "pages": "518",
+        "language": "English",
+        "author": "Prof. Maria Chen"
       }
     },
     {
-      "id": "app-1",
-      "name": "Example Software Suite 2023",
-      "category_id": "applications",
-      "description": "Latest release of this popular software suite with all features.",
-      "size": "3.2 GB",
-      "added_date": "2023-11-10",
+      "id": "scifi-1",
+      "name": "Galactic Horizons",
+      "category_id": "scifi-fantasy",
+      "description": "Epic space opera spanning multiple galaxies and civilizations.",
+      "size": "3.2 MB",
+      "added_date": "2025-03-10",
       "downloads": 1565,
       "seeders": 178,
       "leechers": 34,
       "external_links": [
-        {"title": "Direct Download", "url": "https://example.com/download/app1"}
+        {"title": "Direct Download", "url": "https://example.com/download/book4"}
       ],
       "file_info": {
-        "version": "2023",
-        "platform": "Windows",
-        "activation": "Included",
-        "language": "Multi"
+        "format": "EPUB, MOBI, PDF",
+        "pages": "423",
+        "language": "English",
+        "author": "Alex Rivera"
       }
     },
     {
-      "id": "music-1",
-      "name": "Example Music Album (2023)",
-      "category_id": "music",
-      "description": "Latest album from this popular artist in high quality audio.",
-      "size": "120 MB",
-      "added_date": "2023-11-09",
+      "id": "biography-1",
+      "name": "Life of Innovation",
+      "category_id": "biography",
+      "description": "The definitive biography of one of the most influential tech pioneers of our time.",
+      "size": "5.7 MB",
+      "added_date": "2025-03-09",
       "downloads": 745,
       "seeders": 56,
       "leechers": 8,
       "external_links": [
-        {"title": "Direct Download", "url": "https://example.com/download/music1"}
+        {"title": "Direct Download", "url": "https://example.com/download/book5"}
       ],
       "file_info": {
-        "quality": "FLAC 24bit",
-        "tracks": "12",
-        "artist": "Example Artist",
-        "genre": "Rock"
+        "format": "EPUB, PDF",
+        "pages": "380",
+        "language": "English",
+        "author": "Linda Harris"
       }
     }
   ]

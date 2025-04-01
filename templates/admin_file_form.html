@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  {% if file %}Edit File{% else %}Add New File{% endif %} - Gifts4U Admin
+  {% if file %}Edit eBook{% else %}Add New eBook{% endif %} - Gifts4U Admin
 {% endblock %}
 
 {% block content %}
 <div class="admin-file-form">
-    <h1>{% if file %}Edit File{% else %}Add New File{% endif %}</h1>
+    <h1>{% if file %}Edit eBook{% else %}Add New eBook{% endif %}</h1>
     
     <form method="post" action="{{ url_for('admin_edit_file', file_id=file.id) if file else url_for('admin_add_file') }}">
         <div class="form-group">
-            <label for="id">File ID</label>
+            <label for="id">eBook ID</label>
             <input type="text" id="id" name="id" value="{{ file.id if file else '' }}" {% if file %}readonly{% endif %} required>
-            {% if not file %}<span class="form-hint">Unique identifier, e.g., "movie-123"</span>{% endif %}
+            {% if not file %}<span class="form-hint">Unique identifier, e.g., "fiction-123"</span>{% endif %}
         </div>
         
         <div class="form-group">
-            <label for="name">File Name</label>
+            <label for="name">eBook Title</label>
             <input type="text" id="name" name="name" value="{{ file.name if file else '' }}" required>
         </div>
         
@@ -38,9 +38,9 @@
         </div>
         
         <div class="form-group">
-            <label for="size">File Size</label>
+            <label for="size">eBook Size</label>
             <input type="text" id="size" name="size" value="{{ file.size if file else '' }}" required>
-            <span class="form-hint">E.g., "2.3 GB", "450 MB"</span>
+            <span class="form-hint">E.g., "2.3 MB", "450 KB"</span>
         </div>
         
         <div class="form-group">
@@ -96,9 +96,9 @@
         </div>
         <button type="button" id="add-link" class="btn-secondary">Add Another Link</button>
         
-        <h3>File Info</h3>
+        <h3>eBook Info</h3>
         <div class="form-group">
-            <p class="form-hint">Add additional info fields relevant to this file type (quality, version, etc.)</p>
+            <p class="form-hint">Add additional info fields relevant to this eBook (format, pages, author, etc.)</p>
             <div id="file-info-container">
                 {% if file and file.file_info %}
                     {% for key, value in file.file_info.items() %}
@@ -133,7 +133,7 @@
         <button type="button" id="add-info" class="btn-secondary">Add Another Info Field</button>
         
         <div class="form-actions">
-            <button type="submit" class="btn-primary">Save File</button>
+            <button type="submit" class="btn-primary">Save eBook</button>
             <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary">Cancel</a>
         </div>
     </form>

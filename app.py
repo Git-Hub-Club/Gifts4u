@@ -24,13 +24,13 @@ def load_data():
         # If file doesn't exist or is empty/invalid, return empty data structure
         return {
             "categories": [
-                {"id": "movies", "name": "Movies"},
-                {"id": "tv", "name": "TV Shows"},
-                {"id": "games", "name": "Games"},
-                {"id": "music", "name": "Music"},
-                {"id": "applications", "name": "Applications"},
-                {"id": "documentaries", "name": "Documentaries"},
-                {"id": "other", "name": "Other"}
+                {"id": "fiction", "name": "Fiction"},
+                {"id": "nonfiction", "name": "Non-Fiction"},
+                {"id": "academic", "name": "Academic & Textbooks"},
+                {"id": "scifi-fantasy", "name": "Sci-Fi & Fantasy"},
+                {"id": "biography", "name": "Biography & Memoir"},
+                {"id": "self-help", "name": "Self-Help & Personal Development"},
+                {"id": "other", "name": "Other eBooks"}
             ],
             "files": []
         }
