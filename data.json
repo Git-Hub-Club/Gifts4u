@@ -1,0 +1,113 @@
+{
+  "categories": [
+    {"id": "movies", "name": "Movies"},
+    {"id": "tv", "name": "TV Shows"},
+    {"id": "games", "name": "Games"},
+    {"id": "music", "name": "Music"},
+    {"id": "applications", "name": "Applications"},
+    {"id": "documentaries", "name": "Documentaries"},
+    {"id": "other", "name": "Other"}
+  ],
+  "files": [
+    {
+      "id": "movie-1",
+      "name": "Example Movie 1",
+      "category_id": "movies",
+      "description": "A high-quality movie release with excellent video and audio.",
+      "size": "2.3 GB",
+      "added_date": "2023-11-15",
+      "downloads": 1425,
+      "seeders": 145,
+      "leechers": 25,
+      "external_links": [
+        {"title": "Direct Download", "url": "https://example.com/download/movie1"}
+      ],
+      "file_info": {
+        "quality": "1080p",
+        "codec": "x264",
+        "language": "English",
+        "runtime": "2h 15m"
+      }
+    },
+    {
+      "id": "tv-1",
+      "name": "Example TV Show S01E01",
+      "category_id": "tv",
+      "description": "Season 1 Episode 1 of this popular TV show.",
+      "size": "450 MB",
+      "added_date": "2023-11-14",
+      "downloads": 874,
+      "seeders": 98,
+      "leechers": 12,
+      "external_links": [
+        {"title": "Direct Download", "url": "https://example.com/download/tv1"}
+      ],
+      "file_info": {
+        "quality": "720p",
+        "codec": "x264",
+        "language": "English",
+        "runtime": "45m"
+      }
+    },
+    {
+      "id": "game-1",
+      "name": "Example Game Release",
+      "category_id": "games",
+      "description": "Popular game release with all DLCs included.",
+      "size": "35.6 GB",
+      "added_date": "2023-11-12",
+      "downloads": 2145,
+      "seeders": 245,
+      "leechers": 68,
+      "external_links": [
+        {"title": "Direct Download", "url": "https://example.com/download/game1"}
+      ],
+      "file_info": {
+        "platform": "PC",
+        "version": "v1.5",
+        "crack": "Included",
+        "genre": "Action, Adventure"
+      }
+    },
+    {
+      "id": "app-1",
+      "name": "Example Software Suite 2023",
+      "category_id": "applications",
+      "description": "Latest release of this popular software suite with all features.",
+      "size": "3.2 GB",
+      "added_date": "2023-11-10",
+      "downloads": 1565,
+      "seeders": 178,
+      "leechers": 34,
+      "external_links": [
+        {"title": "Direct Download", "url": "https://example.com/download/app1"}
+      ],
+      "file_info": {
+        "version": "2023",
+        "platform": "Windows",
+        "activation": "Included",
+        "language": "Multi"
+      }
+    },
+    {
+      "id": "music-1",
+      "name": "Example Music Album (2023)",
+      "category_id": "music",
+      "description": "Latest album from this popular artist in high quality audio.",
+      "size": "120 MB",
+      "added_date": "2023-11-09",
+      "downloads": 745,
+      "seeders": 56,
+      "leechers": 8,
+      "external_links": [
+        {"title": "Direct Download", "url": "https://example.com/download/music1"}
+      ],
+      "file_info": {
+        "quality": "FLAC 24bit",
+        "tracks": "12",
+        "artist": "Example Artist",
+        "genre": "Rock"
+      }
+    }
+  ]
+}
