@@ -12,8 +12,7 @@
                 <th class="name-column">Name</th>
                 <th>Size</th>
                 <th>Date Added</th>
-                <th>S</th>
-                <th>L</th>
+                <th>Downloads</th>
             </tr>
         </thead>
         <tbody>
@@ -24,8 +23,7 @@
                 </td>
                 <td class="size-column">{{ file.size }}</td>
                 <td class="date-column">{{ file.added_date }}</td>
-                <td class="seeders">{{ file.seeders }}</td>
-                <td class="leechers">{{ file.leechers }}</td>
+                <td class="downloads">{{ file.downloads }}</td>
             </tr>
             {% endfor %}
         </tbody>

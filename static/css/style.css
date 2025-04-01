@@ -171,12 +171,8 @@ main {
   color: var(--text-muted);
 }
 
-.seeders {
+.downloads {
   color: #00a651;
-}
-
-.leechers {
-  color: #ff0000;
 }
 
 /* File Details */

@@ -215,8 +215,6 @@ def admin_add_file():
             "size": request.form.get('size'),
             "added_date": request.form.get('added_date'),
             "downloads": int(request.form.get('downloads', 0)),
-            "seeders": int(request.form.get('seeders', 0)),
-            "leechers": int(request.form.get('leechers', 0)),
             "external_links": external_links,
             "file_info": file_info
         }
@@ -279,8 +277,6 @@ def admin_edit_file(file_id):
                 "size": request.form.get('size'),
                 "added_date": request.form.get('added_date'),
                 "downloads": int(request.form.get('downloads', 0)),
-                "seeders": int(request.form.get('seeders', 0)),
-                "leechers": int(request.form.get('leechers', 0)),
                 "external_links": external_links,
                 "file_info": file_info
             }

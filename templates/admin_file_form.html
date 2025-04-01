@@ -53,16 +53,6 @@
             <input type="number" id="downloads" name="downloads" value="{{ file.downloads if file else 0 }}" min="0" required>
         </div>
         
-        <div class="form-group">
-            <label for="seeders">Seeders</label>
-            <input type="number" id="seeders" name="seeders" value="{{ file.seeders if file else 0 }}" min="0" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="leechers">Leechers</label>
-            <input type="number" id="leechers" name="leechers" value="{{ file.leechers if file else 0 }}" min="0" required>
-        </div>
-        
         <h3>External Links</h3>
         <div id="external-links-container">
             {% if file and file.external_links %}
