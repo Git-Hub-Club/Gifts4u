@@ -8,12 +8,14 @@
     
     <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary">Back to Dashboard</a>
     
+    <div class="category-order-saved">Categories reordered successfully!</div>
+    
     <h2>Add New Category</h2>
     <form method="post" action="{{ url_for('admin_add_category') }}" class="category-form">
         <div class="form-group">
             <label for="category_id">Category ID</label>
-            <input type="text" id="category_id" name="category_id" required>
-            <span class="form-hint">Lowercase, no spaces (e.g., "movies", "tv-shows")</span>
+            <input type="text" id="category_id" name="category_id" required pattern="[a-z0-9-]+" title="Lowercase letters, numbers, and hyphens only">
+            <span class="form-hint">Lowercase letters, numbers, and hyphens only (e.g., "fiction", "sci-fi-fantasy")</span>
         </div>
         <div class="form-group">
             <label for="category_name">Category Name</label>
@@ -23,21 +25,27 @@
     </form>
     
     <h2>Current Categories</h2>
+    <p class="help-text">Drag and drop rows to reorder categories. The order will affect how categories are displayed on the home page.</p>
+    
     <table class="admin-categories-table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>File Count</th>
-                <th>Actions</th>
+                <th width="5%"></th>
+                <th width="20%">ID</th>
+                <th width="30%">Name</th>
+                <th width="15%">Files</th>
+                <th width="15%">Downloads</th>
+                <th width="15%">Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="sortable-categories">
             {% for category in categories_with_count %}
-            <tr>
+            <tr data-id="{{ category.id }}">
+                <td class="sortable-handle">⠿</td>
                 <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
                 <td>{{ category.file_count }}</td>
+                <td class="category-stats">{{ category.total_downloads }}</td>
                 <td class="actions">
                     <a href="{{ url_for('admin_edit_category', category_id=category.id) }}" class="btn-small">Edit</a>
                     {% if category.file_count == 0 %}
@@ -76,12 +84,13 @@
         const modal = document.getElementById('edit-category-modal');
         const editLinks = document.querySelectorAll('a[href^="{{ url_for("admin_edit_category", category_id="") }}"]');
         const closeBtn = document.querySelector('.close');
+        const savedMessage = document.querySelector('.category-order-saved');
         
         editLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const categoryId = this.getAttribute('href').split('/').pop();
-                const categoryName = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                const categoryName = this.closest('tr').querySelector('td:nth-child(3)').textContent;
                 
                 document.getElementById('edit_category_id').value = categoryId;
                 document.getElementById('edit_category_name').value = categoryName;
@@ -100,6 +109,89 @@
                 modal.style.display = 'none';
             }
         });
+        
+        // Category reordering functionality
+        const sortableCategories = document.getElementById('sortable-categories');
+        let isDragging = false;
+        let dragStartIndex;
+        
+        // Make categories sortable
+        sortableCategories.addEventListener('mousedown', function(e) {
+            if (e.target.classList.contains('sortable-handle')) {
+                isDragging = true;
+                const dragItem = e.target.closest('tr');
+                dragStartIndex = Array.from(sortableCategories.children).indexOf(dragItem);
+                
+                // Add ghost class
+                dragItem.classList.add('sortable-ghost');
+                
+                // Add mouse move and mouse up event listeners
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            }
+        });
+        
+        function onMouseMove(e) {
+            if (!isDragging) return;
+            
+            const y = e.clientY;
+            const rows = Array.from(sortableCategories.children);
+            const dragItem = rows[dragStartIndex];
+            
+            rows.forEach((row, index) => {
+                if (index !== dragStartIndex) {
+                    const rect = row.getBoundingClientRect();
+                    const rowMiddle = rect.top + rect.height / 2;
+                    
+                    if (y < rowMiddle && index < dragStartIndex) {
+                        sortableCategories.insertBefore(dragItem, row);
+                        dragStartIndex = index;
+                    } else if (y > rowMiddle && index > dragStartIndex) {
+                        sortableCategories.insertBefore(dragItem, row.nextSibling);
+                        dragStartIndex = index;
+                    }
+                }
+            });
+        }
+        
+        function onMouseUp() {
+            if (!isDragging) return;
+            
+            isDragging = false;
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+            
+            // Remove ghost class
+            const rows = Array.from(sortableCategories.children);
+            rows[dragStartIndex].classList.remove('sortable-ghost');
+            
+            // Get the new order of category IDs
+            const categoryIds = rows.map(row => row.dataset.id);
+            
+            // Save the new order via API
+            fetch('{{ url_for("admin_reorder_categories") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ category_ids: categoryIds }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    savedMessage.style.display = 'block';
+                    setTimeout(() => {
+                        savedMessage.style.display = 'none';
+                    }, 3000);
+                } else {
+                    alert('Error saving category order: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error saving category order: ' + error);
+            });
+        }
     });
 </script>
 {% endblock %}

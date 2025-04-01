@@ -320,19 +320,56 @@ def admin_manage_categories():
     
     data = load_data()
     
-    # Count files in each category
-    categories_with_count = []
+    # Count files in each category and calculate total downloads
+    categories_with_stats = []
     for category in data['categories']:
-        file_count = len([f for f in data['files'] if f.get('category_id') == category['id']])
-        categories_with_count.append({
+        category_files = [f for f in data['files'] if f.get('category_id') == category['id']]
+        file_count = len(category_files)
+        total_downloads = sum(f.get('downloads', 0) for f in category_files)
+        
+        categories_with_stats.append({
             'id': category['id'],
             'name': category['name'],
-            'file_count': file_count
+            'file_count': file_count,
+            'total_downloads': total_downloads
         })
     
     return render_template('admin_categories.html', 
                           categories=data['categories'],
-                          categories_with_count=categories_with_count)
+                          categories_with_count=categories_with_stats)
+
+@app.route('/admin/categories/reorder', methods=['POST'])
+def admin_reorder_categories():
+    if not is_admin():
+        return {'success': False, 'message': 'Unauthorized'}, 401
+    
+    data = load_data()
+    category_ids = request.json.get('category_ids', [])
+    
+    if not category_ids:
+        return {'success': False, 'message': 'No category IDs provided'}, 400
+    
+    # Create a new ordered categories list
+    new_categories = []
+    for category_id in category_ids:
+        # Find the category in the original list
+        category = next((c for c in data['categories'] if c['id'] == category_id), None)
+        if category:
+            new_categories.append(category)
+    
+    # Add any categories that weren't in the ordered list (should not happen, but just in case)
+    for category in data['categories']:
+        if category['id'] not in category_ids:
+            new_categories.append(category)
+    
+    # Replace categories with the new ordered list
+    data['categories'] = new_categories
+    
+    # Save data
+    if save_data(data):
+        return {'success': True, 'message': 'Categories reordered successfully'}
+    else:
+        return {'success': False, 'message': 'Error saving category order'}, 500
 
 # Add category
 @app.route('/admin/categories/add', methods=['POST'])
@@ -341,8 +378,19 @@ def admin_add_category():
         return redirect(url_for('admin_login'))
     
     data = load_data()
-    category_id = request.form.get('category_id')
-    category_name = request.form.get('category_name')
+    category_id = request.form.get('category_id', '').strip()
+    category_name = request.form.get('category_name', '').strip()
+    
+    # Validate inputs
+    if not category_id or not category_name:
+        flash('Category ID and name are required')
+        return redirect(url_for('admin_manage_categories'))
+    
+    # Validate format
+    import re
+    if not re.match(r'^[a-z0-9-]+$', category_id):
+        flash('Category ID must contain only lowercase letters, numbers, and hyphens')
+        return redirect(url_for('admin_manage_categories'))
     
     # Check if category ID already exists
     if any(c['id'] == category_id for c in data['categories']):
@@ -370,10 +418,17 @@ def admin_edit_category(category_id):
         return redirect(url_for('admin_login'))
     
     data = load_data()
+    category_name = request.form.get('category_name', '').strip()
+    
+    # Validate input
+    if not category_name:
+        flash('Category name is required')
+        return redirect(url_for('admin_manage_categories'))
+    
     category_index = next((i for i, c in enumerate(data['categories']) if c.get('id') == category_id), None)
     
     if category_index is not None:
-        data['categories'][category_index]['name'] = request.form.get('category_name')
+        data['categories'][category_index]['name'] = category_name
         
         if save_data(data):
             flash(f'Category updated successfully')
