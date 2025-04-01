@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev_key_for_testing")
 
 # Admin credentials
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")  # Default password for testing
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "omdas6633")  # Custom password
 
 # Load data from JSON file
 def load_data():
