@@ -25,6 +25,25 @@
         <div><span class="feature-icon">↗</span><span><strong>Easy to discover</strong><small>Search, browse, and enjoy</small></span></div>
     </div>
 
+    <section class="category-explorer" aria-labelledby="category-heading">
+        <div class="section-heading">
+            <div><span class="eyebrow">Find your corner</span><h2 id="category-heading">Explore by category</h2></div>
+            <span class="section-count">Browse all topics</span>
+        </div>
+        <div class="category-grid">
+            {% for category in category_counts %}
+            <a class="category-card" href="{{ url_for('category', category_id=category.id) }}">
+                <span class="category-icon">{{ category.name[0] }}</span>
+                <span class="category-card-copy">
+                    <strong>{{ category.name }}</strong>
+                    <small>{{ category.count }} title{% if category.count != 1 %}s{% endif %}</small>
+                </span>
+                <span class="category-arrow" aria-hidden="true">↗</span>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+
     <section id="latest" class="library-section">
         <div class="section-heading">
             <div><span class="eyebrow">Freshly added</span><h2>Latest eBooks</h2></div>

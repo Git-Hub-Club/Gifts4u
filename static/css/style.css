@@ -897,6 +897,89 @@ nav {
   font-size: 11px;
 }
 
+.category-explorer {
+  margin-bottom: 44px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.category-card {
+  position: relative;
+  display: flex;
+  min-height: 78px;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 11px;
+  overflow: hidden;
+  padding: 14px;
+  border: 1px solid #2a332c;
+  border-radius: 11px;
+  background: linear-gradient(145deg, #1a201b, #141815);
+  color: var(--text-color);
+  text-decoration: none;
+  transition: border-color .2s, background .2s, transform .2s;
+}
+
+.category-card:hover {
+  border-color: #637762;
+  background: #202a22;
+  transform: translateY(-2px);
+}
+
+.category-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  place-items: center;
+  border: 1px solid #445b47;
+  border-radius: 8px;
+  background: #26382a;
+  color: #a7c99c;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.category-card-copy {
+  min-width: 0;
+}
+
+.category-card strong,
+.category-card small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.category-card strong {
+  color: #e8ebe5;
+  font-size: 12px;
+}
+
+.category-card small {
+  margin-top: 4px;
+  color: #818d82;
+  font-size: 10px;
+}
+
+.category-arrow {
+  align-self: flex-start;
+  margin-left: auto;
+  color: #778d78;
+  font-size: 15px;
+  transition: color .2s, transform .2s;
+}
+
+.category-card:hover .category-arrow {
+  color: var(--link-color);
+  transform: translate(2px, -2px);
+}
+
 .library-section {
   margin-bottom: 42px;
 }
@@ -1211,6 +1294,7 @@ footer a { color: #b8c1b8; }
   .hero-art { position: absolute; right: -35px; bottom: -4px; opacity: .32; transform: scale(.8); }
   .feature-strip { grid-template-columns: 1fr; }
   .feature-strip > div { padding: 13px 16px; }
+  .category-grid { grid-template-columns: repeat(2, 1fr); }
   .section-heading h2 { font-size: 22px; }
   .file-table { display: block; }
   .file-table thead { display: none; }
@@ -1239,6 +1323,7 @@ footer a { color: #b8c1b8; }
 @media (max-width: 430px) {
   .hero h1 { font-size: 35px; }
   .hero p { font-size: 13px; }
+  .category-grid { grid-template-columns: 1fr; }
   .section-count { display: none; }
   .file-meta { gap: 8px; }
   .file-meta-item { padding: 10px; }
