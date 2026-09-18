@@ -11,3 +11,8 @@ python -m py_compile \
   deployment/app.py \
   deployment/main.py \
   deployment/wsgi.py
+
+if ! cmp -s app.py deployment/app.py; then
+  echo "deployment/app.py is out of sync with app.py" >&2
+  exit 1
+fi
