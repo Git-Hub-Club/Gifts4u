@@ -50,8 +50,8 @@
    # Import the app
    from main import app as application
 
-   # Set a secret key in the application
-   application.secret_key = os.environ.get("SESSION_SECRET", "dev_key_for_testing")
+   # The app reads SESSION_SECRET from the environment. Admin access is
+   # disabled when it is not configured.
    ```
 
 ## Step 6: Configure Static Files
@@ -65,7 +65,7 @@
 2. Add these variables:
     - `ADMIN_PASSWORD` = Choose a strong password
    - `SESSION_SECRET` = Generate a random string
-3. Admin login is disabled unless `ADMIN_PASSWORD` is configured.
+3. Admin login is disabled unless both `ADMIN_PASSWORD` and `SESSION_SECRET` are configured.
 
 ## Step 8: Reload Your Web App
 1. Click the "Reload" button at the top of the web app configuration page

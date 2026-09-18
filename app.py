@@ -3,18 +3,26 @@ import json
 import uuid
 import logging
 import datetime
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash as flask_flash, session
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
 # Create the Flask app
 app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET", "dev_key_for_testing")
+SESSION_SECRET = os.environ.get("SESSION_SECRET", "").strip()
+SESSION_SECRET_CONFIGURED = bool(SESSION_SECRET)
+app.secret_key = SESSION_SECRET or None
+
+
+def flash(message):
+    """Flash a message only when Flask has a configured session signer."""
+    if SESSION_SECRET_CONFIGURED:
+        flask_flash(message)
 
 # Admin credentials
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
-ADMIN_AUTH_ENABLED = bool(ADMIN_PASSWORD and ADMIN_PASSWORD.strip())
+ADMIN_AUTH_ENABLED = bool(ADMIN_PASSWORD and ADMIN_PASSWORD.strip() and SESSION_SECRET_CONFIGURED)
 
 # Load data from JSON file
 def load_data():
@@ -130,6 +138,14 @@ def admin_login():
     if is_admin():
         return redirect(url_for('admin_dashboard'))
         
+    if not SESSION_SECRET_CONFIGURED:
+        return render_template(
+            'admin_login.html',
+            categories=load_data()['categories'],
+            error='Admin login is unavailable until SESSION_SECRET is configured.',
+            admin_auth_enabled=False
+        )
+
     if not ADMIN_AUTH_ENABLED:
         session.pop('admin_logged_in', None)
         return render_template(
@@ -158,8 +174,9 @@ def admin_login():
 
 @app.route('/admin/logout')
 def admin_logout():
-    session.pop('admin_logged_in', None)
-    flash('You have been logged out')
+    if SESSION_SECRET_CONFIGURED:
+        session.pop('admin_logged_in', None)
+        flash('You have been logged out')
     return redirect(url_for('index'))
 
 # Admin dashboard

@@ -9,5 +9,6 @@ if path not in sys.path:
 # Import the app from main.py
 from main import app as application
 
-# Set a secret key in the application
-application.secret_key = os.environ.get("SESSION_SECRET", "dev_key_for_testing")
+# Use the explicitly configured session signing key. Admin access is disabled
+# by app.py when SESSION_SECRET is missing.
+application.secret_key = os.environ.get("SESSION_SECRET", "").strip() or None
