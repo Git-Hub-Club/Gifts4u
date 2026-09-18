@@ -51,7 +51,7 @@
    from main import app as application
 
    # The app reads SESSION_SECRET from the environment. Admin access is
-   # disabled when it is not configured.
+   # disabled when it is missing, blank, or shorter than 32 characters.
    ```
 
 ## Step 6: Configure Static Files
@@ -64,8 +64,8 @@
 1. On the web app configuration page, scroll down to "Environment variables"
 2. Add these variables:
     - `ADMIN_PASSWORD` = Choose a strong password
-   - `SESSION_SECRET` = Generate a random string
-3. Admin login is disabled unless both `ADMIN_PASSWORD` and `SESSION_SECRET` are configured.
+    - `SESSION_SECRET` = Generate a random value at least 32 characters long
+3. Admin login is disabled unless both `ADMIN_PASSWORD` and a valid `SESSION_SECRET` are configured.
 
 ## Step 8: Reload Your Web App
 1. Click the "Reload" button at the top of the web app configuration page

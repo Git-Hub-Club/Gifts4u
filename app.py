@@ -10,9 +10,10 @@ logging.basicConfig(level=logging.DEBUG)
 
 # Create the Flask app
 app = Flask(__name__)
+MIN_SESSION_SECRET_LENGTH = 32
 SESSION_SECRET = os.environ.get("SESSION_SECRET", "").strip()
-SESSION_SECRET_CONFIGURED = bool(SESSION_SECRET)
-app.secret_key = SESSION_SECRET or None
+SESSION_SECRET_CONFIGURED = len(SESSION_SECRET) >= MIN_SESSION_SECRET_LENGTH
+app.secret_key = SESSION_SECRET if SESSION_SECRET_CONFIGURED else None
 
 
 def flash(message):
@@ -142,7 +143,10 @@ def admin_login():
         return render_template(
             'admin_login.html',
             categories=load_data()['categories'],
-            error='Admin login is unavailable until SESSION_SECRET is configured.',
+            error=(
+                'Admin login is unavailable until SESSION_SECRET is configured '
+                f'with at least {MIN_SESSION_SECRET_LENGTH} characters.'
+            ),
             admin_auth_enabled=False
         )
 

@@ -8,12 +8,13 @@ import app as app_module
 
 
 MISSING = object()
+VALID_SESSION_SECRET = "test-session-secret-" + ("x" * 12)
 
 
 @contextmanager
-def app_with_admin_password(password=MISSING):
+def app_with_admin_password(password=MISSING, session_secret=VALID_SESSION_SECRET):
     """Load the application with an isolated admin configuration."""
-    environment = {"SESSION_SECRET": "test-session-secret"}
+    environment = {"SESSION_SECRET": session_secret}
     if password is not MISSING:
         environment["ADMIN_PASSWORD"] = password
 
@@ -24,6 +25,23 @@ def app_with_admin_password(password=MISSING):
 
 
 class AdminAuthTests(unittest.TestCase):
+    def test_login_is_disabled_without_a_usable_session_secret(self):
+        for secret in ("", " \t\n ", "x" * 31):
+            with self.subTest(secret=secret):
+                with app_with_admin_password("correct-password", secret) as module:
+                    self.assertFalse(module.SESSION_SECRET_CONFIGURED)
+                    self.assertFalse(module.ADMIN_AUTH_ENABLED)
+                    self.assertIsNone(module.app.secret_key)
+
+                    response = module.app.test_client().get("/admin/login")
+
+                    self.assertEqual(response.status_code, 200)
+                    self.assertIn(
+                        b"Admin login is unavailable until SESSION_SECRET is configured with at least 32 characters.",
+                        response.data,
+                    )
+                    self.assertNotIn(b'name="password"', response.data)
+
     def test_login_is_disabled_without_a_usable_admin_password(self):
         for password in (MISSING, "", " \t\n "):
             with self.subTest(password=password):

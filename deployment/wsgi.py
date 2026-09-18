@@ -9,6 +9,5 @@ if path not in sys.path:
 # Import the app from main.py
 from main import app as application
 
-# Use the explicitly configured session signing key. Admin access is disabled
-# by app.py when SESSION_SECRET is missing.
-application.secret_key = os.environ.get("SESSION_SECRET", "").strip() or None
+# app.py validates SESSION_SECRET and disables admin access when it is missing,
+# blank, or shorter than the required minimum.
