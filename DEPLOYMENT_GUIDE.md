@@ -63,9 +63,9 @@
 ## Step 7: Set Environment Variables
 1. On the web app configuration page, scroll down to "Environment variables"
 2. Add these variables:
-   - `ADMIN_PASSWORD` = Choose a strong password
+   - `ADMIN_PASSWORD` = Use at least 12 characters with at least 3 of uppercase, lowercase, number, or symbol
    - `SESSION_SECRET` = Generate a random value at least 32 characters long
-3. Admin login is disabled unless both `ADMIN_PASSWORD` and a valid `SESSION_SECRET` are configured.
+3. Admin login is disabled unless both `ADMIN_PASSWORD` meets the strength requirement and a valid `SESSION_SECRET` are configured.
 
 ## Step 8: Reload Your Web App
 1. Click the "Reload" button at the top of the web app configuration page

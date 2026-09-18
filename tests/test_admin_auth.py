@@ -9,6 +9,9 @@ import app as app_module
 
 MISSING = object()
 VALID_SESSION_SECRET = "test-session-secret-" + ("x" * 12)
+VALID_ADMIN_PASSWORD = "Correct-password7!"
+MIN_LENGTH_PASSWORD = "Abcdefghij1!"
+THREE_CLASS_PASSWORD = "abcdefghi12!"
 
 
 @contextmanager
@@ -28,7 +31,7 @@ class AdminAuthTests(unittest.TestCase):
     def test_login_is_disabled_without_a_usable_session_secret(self):
         for secret in ("", " \t\n ", "x" * 31):
             with self.subTest(secret=secret):
-                with app_with_admin_password("correct-password", secret) as module:
+                with app_with_admin_password(VALID_ADMIN_PASSWORD, secret) as module:
                     self.assertFalse(module.SESSION_SECRET_CONFIGURED)
                     self.assertFalse(module.ADMIN_AUTH_ENABLED)
                     self.assertIsNone(module.app.secret_key)
@@ -43,7 +46,15 @@ class AdminAuthTests(unittest.TestCase):
                     self.assertNotIn(b'name="password"', response.data)
 
     def test_login_is_disabled_without_a_usable_admin_password(self):
-        for password in (MISSING, "", " \t\n "):
+        weak_passwords = (
+            MISSING,
+            "",
+            " \t\n ",
+            "short1!",
+            "alllowercase12",
+            "PasswordOnly",
+        )
+        for password in weak_passwords:
             with self.subTest(password=password):
                 with app_with_admin_password(password) as module:
                     client = module.app.test_client()
@@ -52,30 +63,36 @@ class AdminAuthTests(unittest.TestCase):
 
                     self.assertEqual(response.status_code, 200)
                     self.assertIn(
-                        b"Admin login is unavailable until ADMIN_PASSWORD is configured.",
+                        b"Admin login is unavailable until ADMIN_PASSWORD is configured with at least 12 characters and 3 of uppercase, lowercase, number, or symbol.",
                         response.data,
                     )
                     self.assertNotIn(b'name="password"', response.data)
 
                     response = client.post(
-                        "/admin/login", data={"password": "correct-password"}
+                        "/admin/login", data={"password": VALID_ADMIN_PASSWORD}
                     )
 
                     self.assertEqual(response.status_code, 200)
                     self.assertIn(
-                        b"Admin login is unavailable until ADMIN_PASSWORD is configured.",
+                        b"Admin login is unavailable until ADMIN_PASSWORD is configured with at least 12 characters and 3 of uppercase, lowercase, number, or symbol.",
                         response.data,
                     )
                     with client.session_transaction() as session:
                         self.assertNotIn("admin_logged_in", session)
 
+    def test_minimum_length_and_three_classes_are_accepted(self):
+        for password in (MIN_LENGTH_PASSWORD, THREE_CLASS_PASSWORD):
+            with self.subTest(password=password):
+                with app_with_admin_password(password) as module:
+                    self.assertTrue(module.ADMIN_AUTH_ENABLED)
+
     def test_configured_password_allows_login(self):
-        with app_with_admin_password("correct-password") as module:
+        with app_with_admin_password(VALID_ADMIN_PASSWORD) as module:
             client = module.app.test_client()
 
             response = client.post(
                 "/admin/login",
-                data={"password": "correct-password"},
+                data={"password": VALID_ADMIN_PASSWORD},
                 follow_redirects=False,
             )
 
@@ -89,11 +106,11 @@ class AdminAuthTests(unittest.TestCase):
             self.assertIn(b"Admin Dashboard", dashboard.data)
 
     def test_incorrect_password_is_rejected_when_configured(self):
-        with app_with_admin_password("correct-password") as module:
+        with app_with_admin_password(VALID_ADMIN_PASSWORD) as module:
             client = module.app.test_client()
 
             response = client.post(
-                "/admin/login", data={"password": "incorrect-password"}
+                "/admin/login", data={"password": "Wrong-password7!"}
             )
 
             self.assertEqual(response.status_code, 200)
@@ -102,11 +119,11 @@ class AdminAuthTests(unittest.TestCase):
                 self.assertNotIn("admin_logged_in", session)
 
     def test_existing_admin_session_is_rejected_after_credentials_are_disabled(self):
-        with app_with_admin_password("correct-password") as module:
+        with app_with_admin_password(VALID_ADMIN_PASSWORD) as module:
             client = module.app.test_client()
             login = client.post(
                 "/admin/login",
-                data={"password": "correct-password"},
+                data={"password": VALID_ADMIN_PASSWORD},
                 follow_redirects=False,
             )
             self.assertEqual(login.status_code, 302)

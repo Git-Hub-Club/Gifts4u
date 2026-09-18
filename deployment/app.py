@@ -1,5 +1,6 @@
 import os
 import json
+import re
 import uuid
 import logging
 import datetime
@@ -11,6 +12,8 @@ logging.basicConfig(level=logging.DEBUG)
 # Create the Flask app
 app = Flask(__name__)
 MIN_SESSION_SECRET_LENGTH = 32
+MIN_ADMIN_PASSWORD_LENGTH = 12
+MIN_ADMIN_PASSWORD_CLASSES = 3
 SESSION_SECRET = os.environ.get("SESSION_SECRET", "").strip()
 SESSION_SECRET_CONFIGURED = len(SESSION_SECRET) >= MIN_SESSION_SECRET_LENGTH
 app.secret_key = SESSION_SECRET if SESSION_SECRET_CONFIGURED else None
@@ -23,7 +26,26 @@ def flash(message):
 
 # Admin credentials
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
-ADMIN_AUTH_ENABLED = bool(ADMIN_PASSWORD and ADMIN_PASSWORD.strip() and SESSION_SECRET_CONFIGURED)
+
+
+def is_strong_admin_password(password):
+    """Return whether an admin password meets the minimum strength policy."""
+    if not isinstance(password, str) or not password.strip():
+        return False
+    if len(password) < MIN_ADMIN_PASSWORD_LENGTH:
+        return False
+
+    character_classes = (
+        r"[a-z]",
+        r"[A-Z]",
+        r"\d",
+        r"[^A-Za-z0-9\s]",
+    )
+    return sum(bool(re.search(pattern, password)) for pattern in character_classes) >= MIN_ADMIN_PASSWORD_CLASSES
+
+
+ADMIN_PASSWORD_CONFIGURED = is_strong_admin_password(ADMIN_PASSWORD)
+ADMIN_AUTH_ENABLED = ADMIN_PASSWORD_CONFIGURED and SESSION_SECRET_CONFIGURED
 
 # Load data from JSON file
 def load_data():
@@ -155,7 +177,11 @@ def admin_login():
         return render_template(
             'admin_login.html',
             categories=load_data()['categories'],
-            error='Admin login is unavailable until ADMIN_PASSWORD is configured.',
+            error=(
+                'Admin login is unavailable until ADMIN_PASSWORD is configured '
+                f'with at least {MIN_ADMIN_PASSWORD_LENGTH} characters and '
+                f'{MIN_ADMIN_PASSWORD_CLASSES} of uppercase, lowercase, number, or symbol.'
+            ),
             admin_auth_enabled=False
         )
 
