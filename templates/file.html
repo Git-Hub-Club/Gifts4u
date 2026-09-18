@@ -3,8 +3,12 @@
 {% block title %}{{ file.name }} - Gifts4U eBooks{% endblock %}
 
 {% block content %}
+    <a class="back-link" href="{{ url_for('index') }}">← Back to library</a>
     <div class="file-details">
-        <h1 class="file-title">{{ file.name }}</h1>
+        <div class="detail-heading">
+            <div class="detail-cover" aria-hidden="true">G4</div>
+            <div><span class="eyebrow">{{ category_name }}</span><h1 class="file-title">{{ file.name }}</h1><p class="detail-subtitle">A title from the Gifts4u eBooks collection</p></div>
+        </div>
         
         <div class="file-meta">
             <div class="file-meta-item">
@@ -49,9 +53,10 @@
         {% endif %}
         
         <div class="download-links">
-            <h3>Download Links</h3>
+            <h3>Ready to start reading?</h3>
+            <p>Choose your preferred format below.</p>
             {% for link in file.external_links %}
-            <a href="{{ link.url }}" class="download-button" target="_blank">{{ link.title }}</a>
+            <a href="{{ link.url }}" class="download-button" target="_blank" rel="noopener">{{ link.title }} <span aria-hidden="true">↗</span></a>
             {% endfor %}
         </div>
     </div>

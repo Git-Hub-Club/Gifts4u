@@ -3,19 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover thoughtfully curated ebooks across fiction, science, self-help, and more.">
     <title>{% block title %}Gifts4u eBooks{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <header>
+    <header class="site-header-wrap">
         <div class="container">
             <div class="site-header">
-                <a href="{{ url_for('index') }}" class="logo">Gifts4u eBooks</a>
+                <a href="{{ url_for('index') }}" class="logo" aria-label="Gifts4u eBooks home">
+                    <span class="logo-mark">G</span>
+                    <span>Gifts4u <em>eBooks</em></span>
+                </a>
                 <form action="{{ url_for('search') }}" method="get" class="search-form">
-                    <input type="text" name="q" placeholder="Search ebooks..." value="{{ request.args.get('q', '') }}">
-                    <button type="submit">Search</button>
+                    <label class="sr-only" for="site-search">Search the ebook library</label>
+                    <input id="site-search" type="text" name="q" placeholder="Search by title or topic…" value="{{ request.args.get('q', '') }}">
+                    <button type="submit"><span aria-hidden="true">⌕</span><span>Search</span></button>
                 </form>
             </div>
         </div>
@@ -23,6 +28,7 @@
     
     <nav>
         <div class="container">
+            <div class="nav-label">Browse the library</div>
             <ul class="categories">
                 {% for category in categories %}
                 <li><a href="{{ url_for('category', category_id=category.id) }}">{{ category.name }}</a></li>
@@ -31,7 +37,7 @@
         </div>
     </nav>
     
-    <main class="container">
+    <main class="container page-content">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <div class="flash-messages">
@@ -47,7 +53,8 @@
     
     <footer>
         <div class="container">
-            <p>© 2025 Gifts4u eBooks - A Lightweight eBook Directory | <a href="{{ url_for('admin_login') }}">Admin</a></p>
+            <div class="footer-brand">Gifts4u <span>eBooks</span></div>
+            <p>Thoughtfully curated digital reading, all in one place. <a href="{{ url_for('admin_login') }}">Admin access</a></p>
         </div>
     </footer>
     

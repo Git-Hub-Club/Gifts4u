@@ -3,7 +3,33 @@
 {% block title %}Gifts4u eBooks - Lightweight eBook Directory{% endblock %}
 
 {% block content %}
-    <h1 class="section-title">Latest eBooks</h1>
+    <section class="hero">
+        <div class="hero-copy">
+            <span class="eyebrow">A better way to browse</span>
+            <h1>Find your next<br><span>great read.</span></h1>
+            <p>Explore a growing collection of hand-picked ebooks for curious minds, lifelong learners, and story lovers.</p>
+            <a class="hero-link" href="#latest">Explore the collection <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+            <div class="book-shape book-back"></div>
+            <div class="book-shape book-middle"></div>
+            <div class="book-shape book-front"><span>G4</span></div>
+            <div class="spark spark-one">✦</div>
+            <div class="spark spark-two">✧</div>
+        </div>
+    </section>
+
+    <div class="feature-strip">
+        <div><span class="feature-icon">✦</span><span><strong>Curated picks</strong><small>Worth your reading time</small></span></div>
+        <div><span class="feature-icon">◌</span><span><strong>Seven categories</strong><small>Something for every mood</small></span></div>
+        <div><span class="feature-icon">↗</span><span><strong>Easy to discover</strong><small>Search, browse, and enjoy</small></span></div>
+    </div>
+
+    <section id="latest" class="library-section">
+        <div class="section-heading">
+            <div><span class="eyebrow">Freshly added</span><h2>Latest eBooks</h2></div>
+            <span class="section-count">{{ latest_files|length }} titles</span>
+        </div>
     {% if latest_files %}
     <table class="file-table">
         <thead>
@@ -18,7 +44,7 @@
             {% for file in latest_files %}
             <tr>
                 <td class="name-column">
-                    <a href="{{ url_for('file_details', file_id=file.id) }}">{{ file.name }}</a>
+                    <a href="{{ url_for('file_details', file_id=file.id) }}"><span class="book-avatar">▤</span><span class="book-name">{{ file.name }}<small>View book details</small></span></a>
                 </td>
                 <td class="size-column">{{ file.size }}</td>
                 <td class="date-column">{{ file.added_date }}</td>
@@ -28,10 +54,15 @@
         </tbody>
     </table>
     {% else %}
-    <p>No eBooks available.</p>
+    <div class="empty-state"><strong>No eBooks available yet.</strong><span>Check back soon for new additions.</span></div>
     {% endif %}
+    </section>
 
-    <h1 class="section-title">Popular eBooks</h1>
+    <section class="library-section">
+    <div class="section-heading">
+        <div><span class="eyebrow">Reader favorites</span><h2>Popular eBooks</h2></div>
+        <span class="section-count">{{ popular_files|length }} titles</span>
+    </div>
     {% if popular_files %}
     <table class="file-table">
         <thead>
@@ -46,7 +77,7 @@
             {% for file in popular_files %}
             <tr>
                 <td class="name-column">
-                    <a href="{{ url_for('file_details', file_id=file.id) }}">{{ file.name }}</a>
+                    <a href="{{ url_for('file_details', file_id=file.id) }}"><span class="book-avatar">▤</span><span class="book-name">{{ file.name }}<small>View book details</small></span></a>
                 </td>
                 <td class="size-column">{{ file.size }}</td>
                 <td class="date-column">{{ file.added_date }}</td>
@@ -56,6 +87,7 @@
         </tbody>
     </table>
     {% else %}
-    <p>No eBooks available.</p>
+    <div class="empty-state"><strong>No eBooks available yet.</strong><span>Check back soon for new additions.</span></div>
     {% endif %}
+    </section>
 {% endblock %}
