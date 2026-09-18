@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: gifts4u
+    runtime: python
+    plan: free
+    buildCommand: pip install -r pythonanywhere_requirements.txt
+    startCommand: gunicorn wsgi:application
+    envVars:
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_PASSWORD
+        sync: false
