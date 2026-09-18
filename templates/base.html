@@ -13,9 +13,10 @@
     <header class="site-header-wrap">
         <div class="container">
             <div class="site-header">
-                <a href="{{ url_for('index') }}" class="logo" aria-label="Gifts4u eBooks home">
+                <a href="{{ url_for('index') }}" class="logo" aria-label="Gifts4u home">
                     <span class="logo-mark">G</span>
-                    <span>Gifts4u <em>eBooks</em></span>
+                    <span class="logo-wordmark">Gifts4u</span>
+                    <span class="logo-tag">ebook library</span>
                 </a>
                 <form action="{{ url_for('search') }}" method="get" class="search-form">
                     <label class="sr-only" for="site-search">Search the ebook library</label>
@@ -53,8 +54,8 @@
     
     <footer>
         <div class="container">
-            <div class="footer-brand">Gifts4u <span>eBooks</span></div>
-            <p>Thoughtfully curated digital reading, all in one place. <a href="{{ url_for('admin_login') }}">Admin access</a></p>
+            <div class="footer-brand">Gifts4u <span>digital library</span></div>
+            <p>Thoughtful reads for every gift, every mood, and every curious mind. <a href="{{ url_for('admin_login') }}">Admin access</a></p>
         </div>
     </footer>
     

@@ -11,6 +11,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 # Create the Flask app
 app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_FILE = os.path.join(BASE_DIR, "data.json")
 MIN_SESSION_SECRET_LENGTH = 32
 MIN_ADMIN_PASSWORD_LENGTH = 12
 MIN_ADMIN_PASSWORD_CLASSES = 3
@@ -25,7 +27,7 @@ def flash(message):
         flask_flash(message)
 
 # Admin credentials
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "").strip()
 
 
 def is_strong_admin_password(password):
@@ -50,7 +52,7 @@ ADMIN_AUTH_ENABLED = ADMIN_PASSWORD_CONFIGURED and SESSION_SECRET_CONFIGURED
 # Load data from JSON file
 def load_data():
     try:
-        with open('data.json', 'r') as f:
+        with open(DATA_FILE, 'r', encoding='utf-8') as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         # If file doesn't exist or is empty/invalid, return empty data structure
@@ -70,7 +72,7 @@ def load_data():
 # Save data to JSON file
 def save_data(data):
     try:
-        with open('data.json', 'w') as f:
+        with open(DATA_FILE, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2)
         return True
     except Exception as e:

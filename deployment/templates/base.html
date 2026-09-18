@@ -9,13 +9,18 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <header>
+    <header class="site-header-wrap">
         <div class="container">
             <div class="site-header">
-                <a href="{{ url_for('index') }}" class="logo">Gifts4u eBooks</a>
+                <a href="{{ url_for('index') }}" class="logo" aria-label="Gifts4u home">
+                    <span class="logo-mark">G</span>
+                    <span class="logo-wordmark">Gifts4u</span>
+                    <span class="logo-tag">ebook library</span>
+                </a>
                 <form action="{{ url_for('search') }}" method="get" class="search-form">
-                    <input type="text" name="q" placeholder="Search ebooks..." value="{{ request.args.get('q', '') }}">
-                    <button type="submit">Search</button>
+                    <label class="sr-only" for="site-search">Search the ebook library</label>
+                    <input id="site-search" type="text" name="q" placeholder="Search by title or topic…" value="{{ request.args.get('q', '') }}">
+                    <button type="submit"><span aria-hidden="true">⌕</span><span>Search</span></button>
                 </form>
             </div>
         </div>
@@ -47,7 +52,8 @@
     
     <footer>
         <div class="container">
-            <p>© 2025 Gifts4u eBooks - A Lightweight eBook Directory | <a href="{{ url_for('admin_login') }}">Admin</a></p>
+            <div class="footer-brand">Gifts4u <span>digital library</span></div>
+            <p>Thoughtful reads for every gift, every mood, and every curious mind. <a href="{{ url_for('admin_login') }}">Admin access</a></p>
         </div>
     </footer>
     

@@ -236,13 +236,27 @@ main {
 
 /* Footer */
 footer {
-  background-color: var(--header-bg);
+  background: linear-gradient(180deg, rgba(18, 21, 19, 0.8), rgba(13, 16, 14, 0.95));
   text-align: center;
-  padding: 20px 0;
-  border-top: 1px solid var(--border-color);
+  padding: 28px 0 34px;
+  border-top: 1px solid rgba(244, 241, 235, 0.08);
   margin-top: 40px;
   color: var(--text-muted);
   font-size: 0.9em;
+}
+
+.footer-brand {
+  color: #fffaf3;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-size: 1.1em;
+  margin-bottom: 4px;
+}
+
+.footer-brand span {
+  color: var(--link-color);
+  font-weight: 600;
+  text-transform: lowercase;
 }
 
 /* Admin Panel Styles */
@@ -614,11 +628,21 @@ body {
   color: var(--text-color);
   font-size: 19px;
   letter-spacing: -0.03em;
+  text-decoration: none;
 }
 
-.logo em {
+.logo-wordmark {
+  color: #fffaf3;
+  font-weight: 800;
+}
+
+.logo-tag {
   color: var(--link-color);
-  font-style: normal;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.9;
 }
 
 .logo-mark {
@@ -627,11 +651,11 @@ body {
   height: 32px;
   place-items: center;
   border-radius: 9px;
-  background: var(--button-bg);
+  background: linear-gradient(135deg, var(--link-color), var(--button-hover));
   color: #fff;
   font-size: 17px;
   font-weight: 700;
-  box-shadow: 0 5px 20px rgba(233, 104, 39, 0.25);
+  box-shadow: 0 5px 22px rgba(233, 104, 39, 0.26);
 }
 
 .search-form {
