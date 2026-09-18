@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Search Results for "{{ query }}" - 1337Files{% endblock %}
+{% block title %}Search results for "{{ query }}" · Gifts4u eBooks{% endblock %}
 
 {% block content %}
-    <h1 class="section-title">Search Results for "{{ query }}"</h1>
+    <div class="page-intro search-intro">
+        <span class="eyebrow">Library search</span>
+        <h1>Results for <span>“{{ query }}”</span></h1>
+        {% if results %}<p>{{ results|length }} title{% if results|length != 1 %}s{% endif %} matched your search.</p>{% endif %}
+    </div>
     
     {% if results %}
     <table class="file-table">
@@ -19,7 +23,7 @@
             {% for file in results %}
             <tr>
                 <td class="name-column">
-                    <a href="{{ url_for('file_details', file_id=file.id) }}">{{ file.name }}</a>
+                    <a href="{{ url_for('file_details', file_id=file.id) }}"><span class="book-avatar">▤</span><span class="book-name">{{ file.name }}<small>View book details</small></span></a>
                 </td>
                 <td class="size-column">{{ file.size }}</td>
                 <td class="date-column">{{ file.added_date }}</td>
@@ -29,6 +33,6 @@
         </tbody>
     </table>
     {% else %}
-    <p>No results found for "{{ query }}".</p>
+    <div class="empty-state"><strong>No results found for “{{ query }}”.</strong><span>Try a broader title, author, or topic.</span></div>
     {% endif %}
 {% endblock %}

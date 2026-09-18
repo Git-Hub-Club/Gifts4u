@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ category_name }} Files - 1337Files{% endblock %}
+{% block title %}{{ category_name }} · Gifts4u eBooks{% endblock %}
 
 {% block content %}
-    <h1 class="section-title">{{ category_name }}</h1>
+    <div class="page-intro">
+        <span class="eyebrow">Library category</span>
+        <h1>{{ category_name }}</h1>
+        <p>Browse all of the {{ category_name|lower }} titles in the collection.</p>
+        <span class="section-count">{{ files|length }} title{% if files|length != 1 %}s{% endif %}</span>
+    </div>
     
     {% if files %}
     <table class="file-table">
@@ -19,7 +24,7 @@
             {% for file in files %}
             <tr>
                 <td class="name-column">
-                    <a href="{{ url_for('file_details', file_id=file.id) }}">{{ file.name }}</a>
+                    <a href="{{ url_for('file_details', file_id=file.id) }}"><span class="book-avatar">▤</span><span class="book-name">{{ file.name }}<small>View book details</small></span></a>
                 </td>
                 <td class="size-column">{{ file.size }}</td>
                 <td class="date-column">{{ file.added_date }}</td>
@@ -29,6 +34,6 @@
         </tbody>
     </table>
     {% else %}
-    <p>No files available in this category.</p>
+    <div class="empty-state"><strong>No titles in this category yet.</strong><span>Try another category or search the full library.</span></div>
     {% endif %}
 {% endblock %}

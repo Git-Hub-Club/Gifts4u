@@ -28,7 +28,7 @@
     <section class="category-explorer" aria-labelledby="category-heading">
         <div class="section-heading">
             <div><span class="eyebrow">Find your corner</span><h2 id="category-heading">Explore by category</h2></div>
-            <span class="section-count">Browse all topics</span>
+            <span class="section-count">{{ category_counts|length }} topics to explore</span>
         </div>
         <div class="category-grid">
             {% for category in category_counts %}

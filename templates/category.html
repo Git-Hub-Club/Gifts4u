@@ -7,6 +7,7 @@
         <span class="eyebrow">Library category</span>
         <h1>{{ category_name }}</h1>
         <p>Browse all of the {{ category_name|lower }} titles in the collection.</p>
+        <span class="section-count">{{ files|length }} title{% if files|length != 1 %}s{% endif %}</span>
     </div>
     
     {% if files %}
