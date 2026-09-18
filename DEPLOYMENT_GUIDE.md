@@ -60,11 +60,12 @@
    - URL: `/static/`
    - Directory: `/home/yourusername/gifts4u/static`
 
-## Step 7: Set Environment Variables (Optional)
+## Step 7: Set Environment Variables
 1. On the web app configuration page, scroll down to "Environment variables"
 2. Add these variables:
-   - `ADMIN_PASSWORD` = `omdas6633` (or any password you prefer)
+    - `ADMIN_PASSWORD` = Choose a strong password
    - `SESSION_SECRET` = Generate a random string
+3. Admin login is disabled unless `ADMIN_PASSWORD` is configured.
 
 ## Step 8: Reload Your Web App
 1. Click the "Reload" button at the top of the web app configuration page

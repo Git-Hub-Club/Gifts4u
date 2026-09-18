@@ -13,7 +13,8 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev_key_for_testing")
 
 # Admin credentials
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "omdas6633")  # Custom password
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
+ADMIN_AUTH_ENABLED = bool(ADMIN_PASSWORD and ADMIN_PASSWORD.strip())
 
 # Load data from JSON file
 def load_data():
@@ -121,7 +122,7 @@ def search():
 
 # Admin helper function
 def is_admin():
-    return session.get('admin_logged_in', False)
+    return ADMIN_AUTH_ENABLED and session.get('admin_logged_in', False)
 
 # Admin auth routes
 @app.route('/admin/login', methods=['GET', 'POST'])
@@ -129,6 +130,15 @@ def admin_login():
     if is_admin():
         return redirect(url_for('admin_dashboard'))
         
+    if not ADMIN_AUTH_ENABLED:
+        session.pop('admin_logged_in', None)
+        return render_template(
+            'admin_login.html',
+            categories=load_data()['categories'],
+            error='Admin login is unavailable until ADMIN_PASSWORD is configured.',
+            admin_auth_enabled=False
+        )
+
     error = None
     if request.method == 'POST':
         password = request.form.get('password')
@@ -139,7 +149,12 @@ def admin_login():
         else:
             error = 'Invalid password'
     
-    return render_template('admin_login.html', categories=load_data()['categories'], error=error)
+    return render_template(
+        'admin_login.html',
+        categories=load_data()['categories'],
+        error=error,
+        admin_auth_enabled=True
+    )
 
 @app.route('/admin/logout')
 def admin_logout():

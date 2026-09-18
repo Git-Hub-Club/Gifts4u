@@ -52,7 +52,7 @@ Your site should now be live at: `YOUR_USERNAME.pythonanywhere.com`
 
 ## Admin Access
 - Access the admin area at: `/admin`
-- Default password: `omdas6633`
+- Set the `ADMIN_PASSWORD` environment variable before starting the app. Admin login is disabled when it is not configured.
 
 ## Maintenance
 - The website stores all data in data.json
